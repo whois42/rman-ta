@@ -1,0 +1,3 @@
+@if (treeData$ | async; as tree) {
+  <app-folder-tree [folders]="tree.folders" [items]="tree.items"/>
+}

@@ -1,0 +1,46 @@
+<!-- eslint-disable @angular-eslint/template/elements-content -->
+@if (node().type === 'folder') {
+  <div class="row folder">
+
+    <input
+      type="checkbox"
+      [checked]="checkboxState().checked"
+      [indeterminate]="checkboxState().indeterminate"
+      (change)="folderSelected.emit(node())"
+    />
+
+    <span class="title">{{ node().title }}</span>
+
+    <button
+    class="expand_btn{{ isExpanded() ? ' expand_btn__expanded' : '' }}"
+      type="button"
+      (click)="expandToggled.emit(node().id)"
+    ></button>
+  </div>
+
+  @if (isExpanded() && node().type === 'folder') {
+    <div class="children">
+      @for (child of (node().type === 'folder' ? node().children : []); track child.id) {
+        <app-folder-node
+          [node]="child"
+          [selectedItemIds]="selectedItemIds()"
+          [expandedFolderIds]="expandedFolderIds()"
+          (folderSelected)="folderSelected.emit($event)"
+          (expandToggled)="expandToggled.emit($event)"
+          (itemSelected)="itemSelected.emit($event)"
+        />
+      }
+    </div>
+  }
+}
+
+@if (node().type === 'item') {
+  <div class="row item">
+    <input
+      type="checkbox"
+      [checked]="selectedItemIds().has(node().id)"
+      (change)="itemSelected.emit(node())"
+    />
+    <span class="title">{{ node().title }}</span>
+  </div>
+}

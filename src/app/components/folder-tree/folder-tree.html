@@ -1,0 +1,16 @@
+<div class="folder_tree__container">
+  @for (node of treeData(); track node.id) {
+      <app-folder-node
+        [node]="node"
+        [selectedItemIds]="selectedItemIds()"
+        [expandedFolderIds]="expandedFolderIds()"
+        (folderSelected)="handleFolderSelect($event)"
+        (itemSelected)="handleItemSelect($event)"
+        (expandToggled)="handleFolderExpand($event)"
+      />
+  }
+</div>
+<div>Selected ID's: {{selectedItemIdsStr()}}</div>
+<button type="button" class="clear_btn" (click)="clearSelection()">
+  Clear selection
+</button>
