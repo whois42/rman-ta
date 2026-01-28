@@ -54,6 +54,44 @@ ng e2e
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
-## Additional Resources
+## System Design Overview
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This application renders a hierarchical folder–item structure from a normalized API response.
+
+### Data Flow
+
+1. API response:
+
+Data is received in a column-based format (columns + data arrays).
+
+This format is optimized for transport but not directly usable by the UI.
+
+2. Normalization
+
+The response is converted into typed objects (Folder, Item) using a pure helper (formatResponse).
+
+This step decouples the UI from backend-specific data shapes.
+
+3. Tree construction
+
+Folders and items are transformed into a recursive tree structure via prepareTreeData.
+
+Folders may contain:
+
+- child folders
+
+- items
+
+Sorting rules:
+
+- folders before items
+
+- alphabetical order within each group
+
+4. Presentation
+
+The tree is rendered recursively using dedicated components:
+
+FolderTreeComponent – tree root and state holder
+
+FolderNodeComponent (or split folder/item components) – renders individual nodes
